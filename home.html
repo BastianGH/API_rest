@@ -3,6 +3,8 @@
     <head>
         <meta charset="OTF-8">
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="index.js"></script>
         <link rel="stylesheet" href="style.css">
         <title>Interface Gestion</title>
     </head>
@@ -26,18 +28,61 @@
                         <th>Supprimer un Client :</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Mag</td>
-                        <td>Wosbit</td>
-                        <td>0666666666</td>
-                        <td>magwosebit@gmail.com</td>
-                        <td><button name="Mod">Mod</button></td>
-                        <td><button name="Del">Del</button></td>
+                <tbody id="app">
+                    <tr v-for="client in clients" v-if="!changing">
+                        <td v-for="item in client">{{ item }}</td>
+                        <td><button v-on:click="modify(client)">Mod</button></td>
+                        <td><button v-on:click="kill(client)">Del</button></td>
+                    </tr>
+                    <tr v-for="client in clients" v-if="changing">
+                        <td v-for="item in client">
+                            <input type="text" placeholder=client.item>
+                        </td>
+                        <td><button v-on:click="modify(client)">Mod</button></td>
+                        <td><button v-on:click="kill(client)">Del</button></td>
                     </tr>
                 </tbody>
             </table>
-        <script src="index.js"></script>
+        <script>
+            var app = new Vue ({
+                el: "#app",
+                data: {
+                    changing: false,
+                    clients: [  ['Mag',"Wosbite", "06 66 66 66 66", "magwosbite@gmail.com" ],
+                                ['Mab', 'elshat', "07 77 77 77 77", "mabelshat@gmail.com"]
+                            ],
+                    commands:[]
+                },
+                methods:{
+                    modify: function( client ){
+                        if (this.changing) {
+                            /* GET
+                            PUSH 
+                            */
+                            console.log("Changements enregistrés");
+                            this.changing = false;
+                        }else {
+                            console.log("Changements en cours");
+                            this.changing = true;
+                        } 
+                    },
+                    kill: function ( client ){
+                        let decision = window.prompt("Are you sure you want to delete him ?");
+                        console.log( typeof decision);
+                        if ( decision === null ){
+                            console.log("Sage décision, ne supprimez pas ou vous serez supprimé B)")
+                        }else if ( decision === "" || decision === "yes" ){
+                            console.log("La cible a été apréhendé");
+                        }else {
+                            console.log("Un peu de sang froid de grâce");
+                        }
+                    },
+                    add: function ( clients ){
+                        console.log("Vous pouvez ajouter de nouveaux clients :)")
+                    }
+                }
+            })
+        </script>
         <footer>
         </footer>
     </body>
